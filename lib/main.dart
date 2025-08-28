@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/gradient_container.dart';
+// import 'package:flutter_application_1/section_one/gradient_container.dart';
+import 'package:flutter_application_1/section_two/section_two_container.dart';
 
 // penamaan function menggunakan camelCase, tipe function sama seperti c
 // single quote string lebih sering digunakan di dart
@@ -22,13 +23,14 @@ void main() {
 
   runApp(
     // MaterialApp disini adalah class yang digunakan untuk membuat aplikasi berbasis material design
-    MaterialApp(
-      home: Scaffold(
-        // backgroundColor: Color(0xFFFFFFFF),
-        // ada 2 cara untuk menentukan Color
-        backgroundColor: Colors.blue,
-        body: GradientContainer(Colors.red, Colors.yellow),
-      ),
-    ),
+    // MaterialApp(
+    //   home: Scaffold(
+    //     // backgroundColor: Color(0xFFFFFFFF),
+    //     // ada 2 cara untuk menentukan Color
+    //     backgroundColor: Colors.blue,
+    //     body: GradientContainer(Colors.red, Colors.yellow),
+    //   ),
+    // ),
+    SectionTwoContainer(),
   );
 }
