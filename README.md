@@ -26,3 +26,12 @@ Before starting, ensure you have Flutter installed and run:
 
 ```bash
 flutter doctor
+
+# Sections
+
+## Section 3
+I will learn how to make apps more interactive and easier to style.
+That will include 3 sub-title
+- Using Modals, Dialogs and more.
+- Basic user input handling.
+- Configuring and using App Themes.

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/dice_roller.dart';
+import 'package:flutter_application_1/section_one/dice_roller.dart';
 // GradientContainer adalah nama dari sebuah class
 // extends adalah keyword yang digunakan untuk mewarisi class
 // StatelessWidget adalah class yang digunakan untuk membuat widget yang tidak memiliki state
