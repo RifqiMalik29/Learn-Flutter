@@ -1,0 +1,14 @@
+**SECTION 4 Flutter & Dart Internals**
+
+- Three Trees : Widget Tree, Element Tree, and Render Tree
+- Widget Tree : combination of Widgets
+- Element Tree : flutter translates Widget Tree into Element Tree which is simply in-memory representation of widgets
+- used for determining necessary UI updates
+- elements are reused if possible
+- all widgets are have their own element
+- Render Tree : Visible UI building blocks
+
+*WHAT IS ELEMENT TREE*
+From my understanding, element tree is like container that contains key. It's key is used to render one element inside build() function.
+So, if there is new key inside its element it will re-render that element. But, if there is no new key that pass through certain element,
+flutter will not re-render Element, Instead build() function will be re-render.
