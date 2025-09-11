@@ -107,79 +107,87 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsGeometry.fromLTRB(16, 48, 16, 16),
-      child: Column(
-        children: [
-          TextField(
-            maxLength: 50,
-            decoration: InputDecoration(labelText: 'Title'),
-            controller: _titleController,
-          ),
-          Row(
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    // harus menambahkan scrollable karena jika tidak saat keyboard muncul UI atas tidak bisa di push ke atas
+    return SizedBox(
+      // dibungkus di dalam SizedBox agar bisa mengatur tinggi
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsGeometry.fromLTRB(16, 48, 16, keyboardSpace + 16),
+          child: Column(
             children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Amount',
-                    prefixText: '\$ ',
-                  ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  controller: _amountController,
-                ),
+              TextField(
+                maxLength: 50,
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: _titleController,
               ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      selectedDate != null
-                          ? DateFormat.yMd().format(selectedDate!)
-                          : 'No Date Selected',
-                    ),
-                    IconButton(
-                      onPressed: onPressDateIcon,
-                      icon: const Icon(Icons.calendar_month),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 16),
-          Row(
-            children: [
-              DropdownButton(
-                value: selectedCategory,
-                items: ExpenseCategory.values
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.name.toUpperCase()),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Amount',
+                        prefixText: '\$ ',
                       ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  onChangeDropdown(value);
-                },
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(onPressed: _cancelData, child: Text('Cancel')),
-                    ElevatedButton(
-                      onPressed: _submitData,
-                      child: Text('Add Expense'),
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      controller: _amountController,
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          selectedDate != null
+                              ? DateFormat.yMd().format(selectedDate!)
+                              : 'No Date Selected',
+                        ),
+                        IconButton(
+                          onPressed: onPressDateIcon,
+                          icon: const Icon(Icons.calendar_month),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+        
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  DropdownButton(
+                    value: selectedCategory,
+                    items: ExpenseCategory.values
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e.name.toUpperCase()),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      onChangeDropdown(value);
+                    },
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(onPressed: _cancelData, child: Text('Cancel')),
+                        ElevatedButton(
+                          onPressed: _submitData,
+                          child: Text('Add Expense'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
