@@ -3,7 +3,11 @@ import 'package:flutter_application_1/section_three/models/expense.dart';
 import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onCloseBottomSheet, required this.onAddExpense});
+  const NewExpense({
+    super.key,
+    required this.onCloseBottomSheet,
+    required this.onAddExpense,
+  });
 
   final void Function() onCloseBottomSheet;
   final void Function(Expense expense) onAddExpense;
@@ -43,16 +47,15 @@ class _NewExpenseState extends State<NewExpense> {
     final isAmountInvalid = enteredAmount == null || enteredAmount <= 0;
     final isDateInvalid = selectedDate == null;
 
-    if (isTitleEmpty ||
-        isAmountInvalid ||
-        isDateInvalid) {
+    if (isTitleEmpty || isAmountInvalid || isDateInvalid) {
       // show error dialog
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('Invalid Input'),
           content: const Text(
-              'Please make sure a valid title, amount, date and category was entered.'),
+            'Please make sure a valid title, amount, date and category was entered.',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -108,87 +111,145 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
-    // harus menambahkan scrollable karena jika tidak saat keyboard muncul UI atas tidak bisa di push ke atas
-    return SizedBox(
-      // dibungkus di dalam SizedBox agar bisa mengatur tinggi
-      height: double.infinity,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsetsGeometry.fromLTRB(16, 16, 16, keyboardSpace + 16),
-          child: Column(
-            children: [
-              TextField(
-                maxLength: 50,
-                decoration: InputDecoration(labelText: 'Title'),
-                controller: _titleController,
+    // tidak harus menggunakan LayoutBuilder, karena bisa juga menggunakan MediaQuery
+    // karena MediaQuery juga bisa mendapatkan ukuran layar
+    // LayoutBuilder digunakan agar widget di dalamnya bisa mendapatkan ukuran parentnya bukan ukuran layar
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        return SizedBox(
+          // dibungkus di dalam SizedBox agar bisa mengatur tinggi
+          height: double.infinity,
+          // harus menambahkan scrollable karena jika tidak saat keyboard muncul UI atas tidak bisa di push ke atas
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsetsGeometry.fromLTRB(
+                16,
+                16,
+                16,
+                keyboardSpace + 16,
               ),
-              Row(
+              child: Column(
                 children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Amount',
-                        prefixText: '\$ ',
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      controller: _amountController,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          selectedDate != null
-                              ? DateFormat.yMd().format(selectedDate!)
-                              : 'No Date Selected',
-                        ),
-                        IconButton(
-                          onPressed: onPressDateIcon,
-                          icon: const Icon(Icons.calendar_month),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-        
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  DropdownButton(
-                    value: selectedCategory,
-                    items: ExpenseCategory.values
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.name.toUpperCase()),
+                  // disini tidak menggunakan curly braces karena hanya ada satu statement
+                  // jadi tidak perlu return
+                  if (width >= 600)
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            maxLength: 50,
+                            decoration: InputDecoration(labelText: 'Title'),
+                            controller: _titleController,
                           ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      onChangeDropdown(value);
-                    },
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Amount',
+                                      prefixText: '\$ ',
+                                    ),
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
+                                    controller: _amountController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    TextField(
+                      maxLength: 50,
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: _titleController,
+                    ),
+                  if (width >= 600)
+                    Row(children: [])
+                  else
+                    Row(
                       children: [
-                        TextButton(onPressed: _cancelData, child: Text('Cancel')),
-                        ElevatedButton(
-                          onPressed: _submitData,
-                          child: Text('Add Expense'),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Amount',
+                              prefixText: '\$ ',
+                            ),
+                            keyboardType: TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            controller: _amountController,
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                selectedDate != null
+                                    ? DateFormat.yMd().format(selectedDate!)
+                                    : 'No Date Selected',
+                              ),
+                              IconButton(
+                                onPressed: onPressDateIcon,
+                                icon: const Icon(Icons.calendar_month),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
+
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      DropdownButton(
+                        value: selectedCategory,
+                        items: ExpenseCategory.values
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e.name.toUpperCase()),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          onChangeDropdown(value);
+                        },
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: _cancelData,
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: _submitData,
+                              child: Text('Add Expense'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
