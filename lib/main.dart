@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/section_three/section_three.dart';
 
 // penamaan function menggunakan camelCase, tipe function sama seperti c
@@ -27,65 +28,72 @@ void main() {
   // karena Container widget seringkali berubah-ubah
   // sehingga dapat mengurangi penggunaan memori
 
-  runApp(
-    // MaterialApp disini adalah class yang digunakan untuk membuat aplikasi berbasis material design
-    MaterialApp(
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: kDarkScheme,
-        appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kDarkScheme.onPrimaryContainer,
-          foregroundColor: kDarkScheme.primaryContainer,
-        ),
-        cardTheme: CardThemeData().copyWith(
-          color: kDarkScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kDarkScheme.primaryContainer,
-            foregroundColor: kDarkScheme.onPrimaryContainer,
+  // ensureInitialized digunakan untuk memastikan bahwa binding
+  // antara framework dan engine sudah terhubung sebelum menjalankan aplikasi
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((fn) {
+    runApp(
+      // MaterialApp disini adalah class yang digunakan untuk membuat aplikasi berbasis material design
+      MaterialApp(
+        darkTheme: ThemeData.dark().copyWith(
+          colorScheme: kDarkScheme,
+          appBarTheme: const AppBarTheme().copyWith(
+            backgroundColor: kDarkScheme.onPrimaryContainer,
+            foregroundColor: kDarkScheme.primaryContainer,
+          ),
+          cardTheme: CardThemeData().copyWith(
+            color: kDarkScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kDarkScheme.primaryContainer,
+              foregroundColor: kDarkScheme.onPrimaryContainer,
+            ),
+          ),
+          textTheme: TextTheme().copyWith(
+            titleLarge: TextStyle(
+              color: kDarkScheme.onSecondaryContainer,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
         ),
-        textTheme: TextTheme().copyWith(
-          titleLarge: TextStyle(
-            color: kDarkScheme.onSecondaryContainer,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+        theme: ThemeData().copyWith(
+          colorScheme: kColorScheme,
+          appBarTheme: const AppBarTheme().copyWith(
+            backgroundColor: kColorScheme.onPrimaryContainer,
+            foregroundColor: kColorScheme.primaryContainer,
           ),
+          cardTheme: CardThemeData().copyWith(
+            color: kColorScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kColorScheme.primaryContainer,
+              foregroundColor: kColorScheme.onPrimaryContainer,
+            ),
+          ),
+          textTheme: TextTheme().copyWith(
+            titleLarge: TextStyle(
+              color: kColorScheme.onSecondaryContainer,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        // default theme
+        // themeMode: ThemeMode.system,
+        home: Scaffold(
+          // backgroundColor: Color(0xFFFFFFFF),
+          // ada 2 cara untuk menentukan Color
+          backgroundColor: Colors.blue,
+          body: SectionThree(),
         ),
       ),
-      theme: ThemeData().copyWith(
-        colorScheme: kColorScheme,
-        appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          foregroundColor: kColorScheme.primaryContainer,
-        ),
-        cardTheme: CardThemeData().copyWith(
-          color: kColorScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kColorScheme.primaryContainer,
-            foregroundColor: kColorScheme.onPrimaryContainer,
-          ),
-        ),
-        textTheme: TextTheme().copyWith(
-          titleLarge: TextStyle(
-            color: kColorScheme.onSecondaryContainer,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-      ),
-      // default theme
-      // themeMode: ThemeMode.system,
-      home: Scaffold(
-        // backgroundColor: Color(0xFFFFFFFF),
-        // ada 2 cara untuk menentukan Color
-        backgroundColor: Colors.blue,
-        body: SectionThree(),
-      ),
-    ),
-  );
+    );
+  });
 }
