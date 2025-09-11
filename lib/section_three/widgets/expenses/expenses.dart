@@ -68,6 +68,10 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      // useSafeArea agar tidak menimpa area yang tidak boleh di sentuh
+      // seperti notch, home indicator, dll
+      // tapi di widget Scaffold sudah ada useSafeArea otomatis
+      useSafeArea: true,
       context: context,
       isScrollControlled: true,
       builder: (ctx) => NewExpense(
